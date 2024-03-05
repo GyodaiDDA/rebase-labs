@@ -1,0 +1,44 @@
+name: relabs
+
+services:
+  app:
+    image: ruby
+    ports: 
+      - 4567:4567
+    networks:
+      - rebaselab
+    volumes:
+      - .:/app
+      - gems:/usr/local/bundle/
+    tty: true
+  postgres_dev:
+    image: postgres
+    restart: always
+    env_file:
+      - ./config/database.yml
+    ports:
+      - 5432:5432
+    networks:
+      - rebaselab
+    volumes:
+      - db:/var/lib/postgresql/data
+    container_name: relabs-postgres-dev
+  postgres_test:
+    image: postgres
+    restart: always
+    env_file:
+      - ./config/database.yml
+    ports:
+      - 5433:5432
+    networks:
+      - rebaselab
+    volumes:
+      - db:/var/lib/postgresql/data
+    container_name: relabs-postgres-test
+
+volumes:
+  gems:
+  db:
+
+networks:
+  rebaselab: {}

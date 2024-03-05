@@ -1,0 +1,9 @@
+development:
+  database: rebase_app
+  username: user
+  password: password
+
+test:
+  database: rebase_app_test
+  username: user_test
+  password: password
