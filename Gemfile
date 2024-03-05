@@ -11,3 +11,5 @@ gem 'puma', '~> 6.4'
 gem 'pg', '~> 1.5'
 
 gem 'rackup', '~> 2.1'
+
+gem 'rubocop', '~> 1.61'
