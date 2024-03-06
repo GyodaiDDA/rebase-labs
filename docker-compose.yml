@@ -11,34 +11,41 @@ services:
       - .:/app
       - gems:/usr/local/bundle/
     tty: true
-  postgres_dev:
+    container_name: backend
+  db:
     image: postgres
     restart: always
-    env_file:
-      - ./config/database.yml
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
     ports:
-      - 5432:5432
+      - 5434:5432
     networks:
       - rebaselab
     volumes:
       - db:/var/lib/postgresql/data
-    container_name: relabs-postgres-dev
-  postgres_test:
+    container_name: development
+  db-test:
     image: postgres
     restart: always
-    env_file:
-      - ./config/database.yml
+    environment:
+      - POSTGRES_TEST_DB=test
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
     ports:
-      - 5433:5432
+      - 5433:5433
     networks:
       - rebaselab
     volumes:
-      - db:/var/lib/postgresql/data
-    container_name: relabs-postgres-test
+      - db-test:/var/lib/postgresql/data
+    container_name: test
+
 
 volumes:
   gems:
   db:
+  db-test:
 
 networks:
   rebaselab: {}

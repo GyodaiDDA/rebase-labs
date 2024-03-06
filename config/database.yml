@@ -1,9 +1,17 @@
 development:
-  database: rebase_app
+  host: development
+  database: development
   username: user
   password: password
 
 test:
-  database: rebase_app_test
-  username: user_test
+  host: test
+  database: test
+  username: user
+  password: password
+
+service:
+  host: test
+  database: postgres
+  username: user
   password: password

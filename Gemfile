@@ -13,3 +13,5 @@ gem 'pg', '~> 1.5'
 gem 'rackup', '~> 2.1'
 
 gem 'rubocop', '~> 1.61'
+
+gem "rspec", "~> 3.13"
