@@ -8,10 +8,4 @@ test:
   host: test
   database: test
   username: user
-  password: password
-
-service:
-  host: test
-  database: postgres
-  username: user
-  password: password
+  password: <password

@@ -3,29 +3,36 @@ require 'csv'
 require 'pg'
 
 describe 'CSV import script' do
-  before(:all) { clean_database(:test) }
-  after(:all) { clean_database(:test) }
+  before(:each) do
+    reset_database(:test)
+  end
+
+  after(:each) do
+    reset_database(:test)
+  end
 
   it 'should save data on database' do
-    data = CSV.generate do |csv|
-      csv << %w[Patient Exam Result]
-      csv << ['Carl', 'Blood Type', 'O+']
-      csv << ['Johanna', 'GIF pronunciation', 'failed']
-    end
-    File.write('test_file.csv', data)
-
-    allow_any_instance_of(Object).to receive(:gets).and_return("test_file.csv\n")
-    load 'import_from_csv.rb'
+    system 'ruby import_from_csv.rb test'
 
     conn = connect_to_database(:test)
-    content = conn.exec('SELECT * FROM imported').map(&:to_h)
-    expect(content.size).to eq(2)
-    expect(content[1]['patient']).to eq('Johanna')
-    expect(content[0]['patient']).to eq('Carl')
-    expect(content[1]['exam']).to eq('GIF pronunciation')
-    expect(content[0]['exam']).to eq('Blood Type')
-    expect(content[1]['result']).to eq('failed')
-    expect(content[0]['result']).to eq('O+')
+    query = <<-SQL
+            SELECT * FROM exams
+              INNER JOIN test_results
+                ON exams.id = test_results.exam_id
+              LEFT JOIN test_types
+                ON test_results.test_type_id = test_types.id
+              LEFT JOIN patients
+                ON exams.patient_id = patients.id
+              LEFT JOIN doctors
+                ON exams.doctor_id = doctors.id
+    SQL
+    content = conn.exec(query).map(&:to_h)
+    expect(content.size).to eq(3)
+    expect(content.first['cpf']).to eq('04897317088')
+    expect(content.first['token']).to eq('IQCZ17')
+    expect(content.last['test_type']).to eq('hemácias')
+    expect(content.last['email']).to eq('rayford@kemmer-kunze.info')
+    expect(content.last['test_result']).to eq('28')
     conn.close
   end
 end

@@ -1,12 +1,8 @@
 require_relative 'helpers/import_csv_helper'
 
-puts 'Qual o nome do arquivo? (example.csv)'
-file = gets.chomp
-
-if file == 'test_file.csv'
-  FileImport.new(file, :test)
-elsif File.exist?(file)
-  FileImport.new(file, :development)
+if ARGV.length > 0
+ FileImport.new('csv/test_file.csv', :test)
 else
-  puts "Arquivo '#{file}' não encontrado"
+ puts "Importando arquivo csv. Aguarde..."
+ FileImport.new('csv/data1.csv', :development)
 end

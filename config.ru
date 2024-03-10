@@ -1,18 +1,23 @@
+require 'app'
 require 'sinatra'
 require 'pg'
 
 configure :development do
   set :database, {
     adapter: 'postgresql',
-    database: 'rebase_app',
-    host: 'postgres'
+    database: 'development',
+    user: 'user'
+    password: 'password'
+    host: 'development'
   }
 end
 
 configure :test do
   set :database, {
     adapter: 'postgresql',
-    database: 'rebase_app_test',
-    host: 'postgres'
+    database: 'test',
+    user: 'user',
+    password: 'password',
+    host: 'test'
   }
 end
