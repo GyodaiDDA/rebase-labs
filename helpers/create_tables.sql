@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS exams (
      patient_id INTEGER NOT NULL,
      doctor_id INTEGER NOT NULL,
      CONSTRAINT fk_exam_patient FOREIGN KEY (patient_id) REFERENCES patients (id),
-     CONSTRAINT fk_exam_doctor FOREIGN KEY (doctor_id) REFERENCES doctors (id)
+     CONSTRAINT fk_exam_doctor FOREIGN KEY (doctor_id) REFERENCES doctors (id),
+     UNIQUE (token)
 );
 
 CREATE TABLE IF NOT EXISTS test_types (
@@ -43,5 +44,6 @@ CREATE TABLE IF NOT EXISTS test_results (
      exam_id INTEGER NOT NULL,
      test_result VARCHAR(30) NOT NULL,
      CONSTRAINT fk_test_type_result FOREIGN KEY (test_type_id) REFERENCES test_types (id),
-     CONSTRAINT fk_exam_result FOREIGN KEY (exam_id) REFERENCES exams (id)
+     CONSTRAINT fk_exam_result FOREIGN KEY (exam_id) REFERENCES exams (id),
+     UNIQUE (test_type_id, exam_id)
 );

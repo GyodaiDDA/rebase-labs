@@ -30,7 +30,6 @@ GEM
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
     diff-lcs (1.5.1)
-    dotenv (3.1.0)
     drb (2.2.1)
     i18n (1.14.4)
       concurrent-ruby (~> 1.0)
@@ -118,7 +117,6 @@ PLATFORMS
 DEPENDENCIES
   byebug (~> 11.1)
   database_cleaner (~> 2.0)
-  dotenv (~> 3.1)
   pg (~> 1.5)
   puma (~> 6.4)
   rack-test (~> 2.1)

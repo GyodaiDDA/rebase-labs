@@ -38,10 +38,10 @@ RSpec.describe 'Exam Results Endpoint' do
       get '/tests'
       expect(last_response.status).to eq 200
       expect(last_response.content_type).to eq 'application/json'
-      expect(last_response.body).to include('04897317088')
-      expect(last_response.body).to include('IQCZ17')
+      expect(last_response.body).to include('04888317088')
+      expect(last_response.body).to include('4WDI67')
       expect(last_response.body).to include('hemácias')
-      expect(last_response.body).to include('rayford@kemmer-kunze.info')
+      expect(last_response.body).to include('java@lina.pir')
       expect(last_response.body).not_to include 'Nenhum dado foi importado ainda'
     end
   end

@@ -28,11 +28,11 @@ describe 'CSV import script' do
     SQL
     content = conn.exec(query).map(&:to_h)
     expect(content.size).to eq(3)
-    expect(content.first['cpf']).to eq('04897317088')
-    expect(content.first['token']).to eq('IQCZ17')
+    expect(content.first['cpf']).to eq('04888317088')
+    expect(content.first['token']).to eq('ICQ123')
     expect(content.last['test_type']).to eq('hemácias')
-    expect(content.last['email']).to eq('rayford@kemmer-kunze.info')
-    expect(content.last['test_result']).to eq('28')
+    expect(content.last['email']).to eq('dra_marina@kemmer.dot')
+    expect(content.last['test_result']).to eq('38')
     conn.close
   end
 end

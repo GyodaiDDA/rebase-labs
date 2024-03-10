@@ -18,5 +18,3 @@ end
 
 gem "database_cleaner", "~> 2.0"
 
-
-gem "dotenv", "~> 3.1"

@@ -50,10 +50,9 @@ class FileImport
     )
     test_results = conn.prepare('test_results',
       "INSERT INTO test_results (exam_id, test_type_id, test_result)
-      VALUES (
-        (SELECT id FROM exams WHERE token = $1 LIMIT 1),
-        (SELECT id FROM test_types WHERE test_type = $2 LIMIT 1),
-        $3)"
+      VALUES ($1, $2, $3)
+      ON CONFLICT DO NOTHING
+      RETURNING id;"
     )
     csv_table.each do |row|
       patient_data = row[0..6]
@@ -88,8 +87,9 @@ class FileImport
                       else
                         test_type[0]['id']
                       end
-
-      conn.exec_prepared('test_results', [exam_data[0].to_s, test_type_data[0].to_s, test_result_data])
+      unless test_type_id.nil? || exam_id.nil?
+        conn.exec_prepared('test_results', [exam_id, test_type_id, test_result_data])
+      end
     end
     conn.exec("COMMIT")
   end
