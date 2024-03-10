@@ -10,12 +10,10 @@ set :bind, '0.0.0.0'
 
 get '/tests' do
   conn = connect_to_database('development')
-  if table_exists?(conn, 'imported')
-    data = []
-    result = conn.exec('SELECT * FROM imported;')
-    result.each { |row| data << row }
-    json data
-  else 
-    return json [200, 'Nenhum dado foi importado ainda']
-  end  
+  return json [200, 'Nenhum dado foi importado ainda'] unless table_exists?(conn, 'imported')
+
+  data = []
+  result = conn.exec('SELECT * FROM imported;')
+  result.each { |row| data << row }
+  json data
 end

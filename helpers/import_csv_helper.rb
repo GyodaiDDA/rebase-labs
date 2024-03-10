@@ -20,21 +20,22 @@ class FileImport
     create_table = <<~SQL
       CREATE TABLE IF NOT EXISTS imported (id SERIAL PRIMARY KEY,
       #{csv_table.headers.join(" VARCHAR(50),\n")} VARCHAR(50));
-      SQL
+    SQL
     conn.exec(create_table)
   end
-  
+
   def populate_table(conn, csv_table)
     headers = csv_table.headers.join(', ')
     csv_table.each do |row|
       conn.exec(
-      "INSERT INTO imported (#{headers}) VALUES ('#{row.fields.join("', '")}')"
+        "INSERT INTO imported (#{headers}) VALUES ('#{row.fields.join("', '")}')"
       )
     end
   end
-    
+
   def table_exists?(conn, table_name)
-    result = conn.exec_params('SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = $1)', [table_name])
+    result = conn.exec_params('SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = $1)',
+                              [table_name])
     exists = result[0]['exists']
     exists == 't'
   end

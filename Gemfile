@@ -14,4 +14,4 @@ gem 'rackup', '~> 2.1'
 
 gem 'rubocop', '~> 1.61'
 
-gem "rspec", "~> 3.13"
+gem 'rspec', '~> 3.13'

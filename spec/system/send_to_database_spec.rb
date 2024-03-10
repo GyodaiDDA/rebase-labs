@@ -2,22 +2,21 @@ require 'spec_helper'
 require 'csv'
 require 'pg'
 
-
 describe 'CSV import script' do
   before(:all) { clean_database(:test) }
   after(:all) { clean_database(:test) }
-  
+
   it 'should save data on database' do
     data = CSV.generate do |csv|
-      csv << ['Patient','Exam','Result']
-      csv << ['Carl','Blood Type', 'O+']
-      csv << ['Johanna', 'GIF pronunciation','failed']
+      csv << %w[Patient Exam Result]
+      csv << ['Carl', 'Blood Type', 'O+']
+      csv << ['Johanna', 'GIF pronunciation', 'failed']
     end
     File.write('test_file.csv', data)
-  
+
     allow_any_instance_of(Object).to receive(:gets).and_return("test_file.csv\n")
     load 'import_from_csv.rb'
-    
+
     conn = connect_to_database(:test)
     content = conn.exec('SELECT * FROM imported').map(&:to_h)
     expect(content.size).to eq(2)
