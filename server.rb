@@ -13,9 +13,9 @@ get '/tests' do
   conn = connect_to_database(Sinatra::Application.environment)
   return json [200, 'Nenhum dado foi importado ainda'] unless table_exists?(conn, 'exams')
 
-  result = conn.exec(File.open('helpers/query.sql').read)
-  data = result.to_a
-  data.each do |row|
+  result = conn.exec(File.open('helpers/structured_query.sql').read)
+  data = { results: result.to_a }
+  data[:results].each do |row|
     row['doctor'] = JSON.parse(row['doctor']) if row['doctor']
     row['tests'] = JSON.parse(row['tests']) if row['tests']
   end

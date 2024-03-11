@@ -1,0 +1,31 @@
+.short-text-component {
+  padding-left: 10px;
+  padding-top: 2px;
+}
+
+p {
+  margin: 0px 0px 0px 10px;
+}
+
+.short-table {
+  padding-left: 10px;
+  font-size: small;
+}
+
+li.opened span {
+  font-weight: bolder;
+  margin: 10px 0px 10px 0px;
+}
+
+li.opened::marker{
+  content: "↘";
+}
+li::marker {
+  content: "➞";
+}
+
+div.details p {
+  font-weight: bolder;
+  font-size: small;
+}
+
