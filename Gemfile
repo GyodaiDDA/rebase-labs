@@ -18,3 +18,5 @@ end
 
 gem "database_cleaner", "~> 2.0"
 
+
+gem "rerun", "~> 0.14.0"

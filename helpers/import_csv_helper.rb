@@ -22,14 +22,14 @@ class FileImport
     conn.exec("BEGIN")
     patients_prepared = conn.prepare(
       'patients',
-      'INSERT INTO patients (cpf, full_name, email, birthday, addresses, city, province)
+      'INSERT INTO patients (cpf, full_name, email, birthday, addresses, city, state)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
       ON CONFLICT DO NOTHING
       RETURNING id;'
     )
     doctors_prepared = conn.prepare(
       'doctors',
-      "INSERT INTO doctors (crm, province, full_name, email)
+      "INSERT INTO doctors (crm, crm_state, full_name, email)
       VALUES ($1, $2, $3, $4)
       ON CONFLICT DO NOTHING
       RETURNING id;"

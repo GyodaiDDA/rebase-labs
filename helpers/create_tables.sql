@@ -6,14 +6,14 @@ CREATE TABLE IF NOT EXISTS patients (
      birthday DATE,
      addresses VARCHAR(120),
      city VARCHAR(80),
-     province VARCHAR(20),
+     state VARCHAR(20),
      UNIQUE (cpf)
 );
 
 CREATE TABLE IF NOT EXISTS doctors (
      id SERIAL PRIMARY KEY,
      crm VARCHAR(10) NOT NULL,
-     province VARCHAR(20) NOT NULL,
+     crm_state VARCHAR(20) NOT NULL,
      full_name VARCHAR(80),
      email VARCHAR(80),
      UNIQUE (crm)

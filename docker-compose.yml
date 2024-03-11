@@ -37,6 +37,7 @@ services:
       - .:/app
       - gems:/usr/local/bundle/
     tty: true
+    command: bash -c "cd app && rerun server.rb"
 
 volumes:
   gems:
