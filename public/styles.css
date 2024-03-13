@@ -1,3 +1,9 @@
+body {
+  color-scheme: dark !important;
+  background-color: #26423c !important;
+  color: white;
+}
+
 .short-text-component {
   padding-left: 10px;
   padding-top: 2px;
@@ -12,12 +18,17 @@ p {
   font-size: small;
 }
 
-li.opened span {
+li.selected span {
   font-weight: bolder;
   margin: 10px 0px 10px 0px;
 }
 
-li.opened::marker{
+li span {
+  font-weight: normal;
+  margin: 10px 0px 10px 0px;
+}
+
+li.selected::marker{
   content: "↘";
 }
 li::marker {

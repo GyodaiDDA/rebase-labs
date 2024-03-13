@@ -1,13 +1,10 @@
 require 'spec_helper'
 require 'csv'
 require 'pg'
+#require_relative '../assets/queries'
 
 describe 'CSV import script' do
   before(:each) do
-    reset_database(:test)
-  end
-
-  after(:each) do
     reset_database(:test)
   end
 
@@ -15,24 +12,25 @@ describe 'CSV import script' do
     system 'ruby import_from_csv.rb test'
 
     conn = connect_to_database(:test)
-    query = <<-SQL
-            SELECT * FROM exams
-              INNER JOIN test_results
-                ON exams.id = test_results.exam_id
-              LEFT JOIN test_types
-                ON test_results.test_type_id = test_types.id
-              LEFT JOIN patients
-                ON exams.patient_id = patients.id
-              LEFT JOIN doctors
-                ON exams.doctor_id = doctors.id
-    SQL
+    query = File.open("queries/list_exams.sql").read
     content = conn.exec(query).map(&:to_h)
     expect(content.size).to eq(3)
     expect(content.first['cpf']).to eq('04888317088')
-    expect(content.first['token']).to eq('ICQ123')
-    expect(content.last['test_type']).to eq('hemácias')
-    expect(content.last['email']).to eq('dra_marina@kemmer.dot')
-    expect(content.last['test_result']).to eq('38')
+    expect(content.first['result_token']).to eq('ICQ123')
+    expect(JSON.parse(content.last['tests'])[0]['test']).to eq('tgp')
+    expect(JSON.parse(content.last['doctor'])['crm']).to eq('B00023FM66')
+    expect(JSON.parse(content.last['tests'])[0]['result']).to eq('238')
+    conn.close
+  end
+
+  it 'should not send repeated data' do
+    system 'ruby import_from_csv.rb test'
+    system 'ruby import_from_csv.rb test'
+    conn = connect_to_database(:test)
+    query = File.open('queries/list_exams.sql').read
+
+    content = conn.exec(query).map(&:to_h)
+    expect(content.size).to eq(3)
     conn.close
   end
 end

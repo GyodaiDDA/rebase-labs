@@ -1,30 +1,73 @@
 const fragment = document.createDocumentFragment();
-const url = 'http://localhost:4567/tests';
+const list_url = `http://localhost:4567/tests`;
+const token = '';
+const token_url = `http://localhost:4567/tests/${token}`;
+const searchInput = document.getElementById('search-input');
+const searchButton = document.getElementById('search-button');
+const listButton = document.getElementById('list-button');
 
-fetch(url).
-  then((response) => response.json()).
-  then((data) => {
+listButton.addEventListener('click', showList);
+
+searchButton.addEventListener('click', function() {
+  console.log('search button clicked');
+  const searchToken = searchInput.value;
+  searchData(searchToken);
+});
+
+
+  function showList() {
+    fetch(list_url).
+      then((response) => response.json()).
+      then((data) => populateList(data)).
+      then(() => {
+        document.querySelector('ul').appendChild(fragment);
+      }).
+      catch(function(error) {
+        console.log(error);
+      });
+  };
+
+  function populateList(data) {
     data.results.forEach(function(result) {
       const li = document.createElement('li');
-      appendElement('span', result.result_token, li, "token");
-      appendElement('span', result.result_date, li, "exam date:");
-
+      li.classList.add('list-item');
+      appendElement('span', result.result_token, li, 'short-text-component', "token");
+      appendElement('span', result.result_date, li, 'short-text-component', "exam date:");
       li.addEventListener('click', function() {
         showDetails(result, li);
       });
       fragment.appendChild(li);
     })
-  }).
-  then(() => {
-    document.querySelector('ul').appendChild(fragment);
-  }).
-  catch(function(error) {
-    console.log(error);
-  });
+  }
 
-  function appendElement(elementType, text, target, label = null){
+  function searchData(token) {
+  fetch(`${token_url}${token}`).
+    then((response) => response.json()).
+    then((data) => {
+      console.log(data)
+      data.results.forEach(function(result) {
+        const li = document.createElement('li');
+        li.classList.add('list-item');
+        appendElement('div', '', li);
+        appendElement('span', result.result_token, li, 'short-text-component', "token");
+        appendElement('span', result.result_date, li, 'short-text-component', "exam date:");
+        li.addEventListener('click', function() {
+          showDetails(result, li);
+        });
+        fragment.appendChild(li);
+      })
+    }).
+    then(() => {
+      document.querySelector('ul').appendChild(fragment);
+    }).
+    catch(function(error) {
+      console.log(error);
+    });
+};
+
+  function appendElement(elementType, text, target, aclass = null, label = null){
     const element = document.createElement(elementType);
-    element.classList.add('short-text-component');
+    addClass(element,`${aclass}`);
     if (label) {
       element.textContent = `${label} ${text}`;
     } else {
@@ -48,10 +91,12 @@ fetch(url).
 
 
   function showDetails(result, container) {
-    let detailsDiv = container.nextElementSibling;
-    if (detailsDiv && detailsDiv.classList.contains('details')) {
-      detailsDiv.style.display = detailsDiv.style.display === 'none' ? 'block' : 'none';
-      container.classList.toggle('opened');
+    if (!container.classList.contains('selected')) {
+      hideAll('.details');
+    }
+    if (container.nextElementSibling.classList.contains('details')) {
+      let detailsDiva = container.nextElementSibling;
+      detailsDiva.style.display = detailsDiva.style.display === 'none' ? 'block' : 'none';
     } else {
       detailsDiv = document.createElement('div');
       detailsDiv.classList.add('details');
@@ -59,6 +104,25 @@ fetch(url).
       appendElement('p', result.doctor.name.toUpperCase(), detailsDiv, "doctor:");
       appendTable(result.tests, 'test', ['test', 'limits','result'], detailsDiv, "tests:");
       container.after(detailsDiv);
-      container.classList.add('opened');
+      detailsDiv.style.display = 'block';
+    }
+    container.classList.toggle('selected');
+  }
+
+  function hideAll(selector) {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(element => {
+      if (element.style.display === 'block') {
+        element.style.display = 'none';
+        element.previousElementSibling.classList.remove('selected');
+      }
+    });
+  }
+
+  function addClass(element, className) {
+    if (element.classList) {
+        element.classList.add(className);
+    } else {
+        element.className += ' ' + className;
     }
   }

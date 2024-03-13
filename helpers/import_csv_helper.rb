@@ -15,7 +15,7 @@ class FileImport
     create_tables(conn)
     populate_tables(conn, csv_table)
     conn.close
-    puts 'Dados importados com sucesso.'
+    puts 'Dados importados com sucesso.' unless environment == :test
   end
 
   def populate_tables(conn, csv_table)  

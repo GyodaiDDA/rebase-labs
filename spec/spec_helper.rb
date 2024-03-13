@@ -22,9 +22,9 @@ require 'rack/test'
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   config.include Rack::Test::Methods
-  config.before(:each) do
-    $db = []
-  end
+    #allow($stdout).to receive(:puts)
+    #allow($stdout).to receive(:write)
+    #$db = []
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
