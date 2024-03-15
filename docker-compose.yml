@@ -55,7 +55,7 @@ services:
     ports: []
     depends_on:
       - redis
-      - sidekiq
+      - app
     environment:
       - REDIS_URL=redis://redis:6379/0
     command: bash -c "cd app && bundle install && sidekiq -r ./jobs/import_from_csv_job.rb"
