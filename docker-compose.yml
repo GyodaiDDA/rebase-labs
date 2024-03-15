@@ -37,7 +37,6 @@ services:
       - .:/app
       - gems:/usr/local/bundle/
     tty: true
-    working_directory: app
     command: bash -c "cd app && bundle install && rerun server.rb"
     environment:
       - REDIS_URL=redis://redis:6379/0

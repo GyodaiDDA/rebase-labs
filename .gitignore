@@ -1,2 +1,3 @@
 .byebug_history
 jobs/*.csv
+.rubocop.yml
