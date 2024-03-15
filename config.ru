@@ -1,6 +1,7 @@
-require 'app'
+require 'server'
 require 'sinatra'
 require 'pg'
+require 'sidekiq/web'
 
 configure :development do
   set :database, {

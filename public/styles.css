@@ -1,7 +1,15 @@
 body {
   color-scheme: dark !important;
   background-color: #26423c !important;
-  color: white;
+  color: #fff;
+}
+
+div {
+  margin: 20px 20px 20px 20px;
+}
+
+form, input, button{
+  color: #000;
 }
 
 .short-text-component {

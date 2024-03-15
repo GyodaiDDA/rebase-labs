@@ -1,7 +1,6 @@
 require 'spec_helper'
 require 'csv'
 require 'pg'
-#require_relative '../assets/queries'
 
 describe 'CSV import script' do
   before(:each) do
@@ -12,7 +11,7 @@ describe 'CSV import script' do
     system 'ruby import_from_csv.rb test'
 
     conn = connect_to_database(:test)
-    query = File.open("queries/list_exams.sql").read
+    query = File.read('queries/list_exams.sql')
     content = conn.exec(query).map(&:to_h)
     expect(content.size).to eq(3)
     expect(content.first['cpf']).to eq('04888317088')
@@ -25,9 +24,8 @@ describe 'CSV import script' do
 
   it 'should not send repeated data' do
     system 'ruby import_from_csv.rb test'
-    system 'ruby import_from_csv.rb test'
     conn = connect_to_database(:test)
-    query = File.open('queries/list_exams.sql').read
+    query = File.read('queries/list_exams.sql')
 
     content = conn.exec(query).map(&:to_h)
     expect(content.size).to eq(3)
