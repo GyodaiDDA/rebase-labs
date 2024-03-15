@@ -30,6 +30,11 @@ services:
 
   app:
     container_name: backend
+    depends_on:
+      - sidekiq
+      - redis
+      - development
+      - test
     image: ruby
     ports: 
       - 4567:4567
@@ -40,6 +45,7 @@ services:
     command: bash -c "cd app && bundle install && rerun server.rb"
     environment:
       - REDIS_URL=redis://redis:6379/0
+  
   
   sidekiq:
     container_name: sidekiq
