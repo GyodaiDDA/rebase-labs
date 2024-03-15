@@ -1,5 +1,6 @@
 require 'sidekiq'
 require_relative '../helpers/import_csv_helper'
+require_relative 'clean_data_storage_job'
 
 class ImportFromCSVJob
   include Sidekiq::Worker

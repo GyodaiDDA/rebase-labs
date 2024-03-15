@@ -7,8 +7,8 @@ configure :development do
   set :database, {
     adapter: 'postgresql',
     database: 'development',
-    user: 'user'
-    password: 'password'
+    user:,
+    password:,
     host: 'development'
   }
 end
@@ -17,8 +17,8 @@ configure :test do
   set :database, {
     adapter: 'postgresql',
     database: 'test',
-    user: 'user',
-    password: 'password',
+    user:,
+    password:,
     host: 'test'
   }
 end

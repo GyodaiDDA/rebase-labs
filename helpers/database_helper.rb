@@ -32,7 +32,7 @@ def break_db_connections(conn, environment)
 end
 
 def table_exists?(conn, table_name)
-  return unless conn
+  return false unless conn
 
   result = conn.exec_params('SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = $1)', [table_name])
   exists = result[0]['exists']

@@ -20,36 +20,36 @@ class FileImport
 
   def populate_tables(conn, csv_table)
     conn.exec('BEGIN')
-    patients_prepared = conn.prepare(
+    conn.prepare(
       'patients',
       'INSERT INTO patients (cpf, full_name, email, birthday, addresses, city, state)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
       ON CONFLICT DO NOTHING
       RETURNING id;'
     )
-    doctors_prepared = conn.prepare(
+    conn.prepare(
       'doctors',
       "INSERT INTO doctors (crm, crm_state, full_name, email)
       VALUES ($1, $2, $3, $4)
       ON CONFLICT DO NOTHING
       RETURNING id;"
     )
-    exams = conn.prepare(
+    conn.prepare(
       'exams',
       "INSERT INTO exams (token, exam_date, patient_id, doctor_id)
       VALUES ($1, $2, $3, $4)
       ON CONFLICT DO NOTHING
       RETURNING id;"
     )
-    test_types = conn.prepare(
+    conn.prepare(
       'test_types',
       "INSERT INTO test_types (test_type, test_type_limits)
       VALUES ($1, $2)
       ON CONFLICT DO NOTHING
       RETURNING id;"
     )
-    test_results = conn.prepare('test_results',
-                                "INSERT INTO test_results (exam_id, test_type_id, test_result)
+    conn.prepare('test_results',
+                 "INSERT INTO test_results (exam_id, test_type_id, test_result)
       VALUES ($1, $2, $3)
       ON CONFLICT DO NOTHING
       RETURNING id;")
@@ -60,14 +60,16 @@ class FileImport
       test_type_data = row[13..14]
       test_result_data = row[15]
       patient = conn.exec_prepared('patients',
-                                   [patient_data[0], patient_data[1], patient_data[2], patient_data[3],
-                                    patient_data[4], patient_data[5], patient_data[6]])
-      patient_id = patient_id = if patient.ntuples.zero?
-                                  conn.exec_params('SELECT id FROM patients WHERE cpf = $1',
-                                                   [patient_data[0]])[0]['id']
-                                else
-                                  patient[0]['id']
-                                end
+                                   [patient_data[0], patient_data[1],
+                                    patient_data[2], patient_data[3],
+                                    patient_data[4], patient_data[5],
+                                    patient_data[6]])
+      patient_id = if patient.ntuples.zero?
+                     conn.exec_params('SELECT id FROM patients WHERE cpf = $1',
+                                      [patient_data[0]])[0]['id']
+                   else
+                     patient[0]['id']
+                   end
 
       doctor = conn.exec_prepared('doctors', [doctor_data[0], doctor_data[1], doctor_data[2], doctor_data[3]])
       doctor_id = if doctor.ntuples.zero?
@@ -99,7 +101,7 @@ class FileImport
 
   def numbers_only(csv_column)
     csv_column.map do |column|
-      column = column.gsub(/[^0-9]/, '')
+      column.gsub!(/[^0-9]/, '')
     end
   end
 end

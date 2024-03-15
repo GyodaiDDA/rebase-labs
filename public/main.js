@@ -33,7 +33,7 @@ importButton.addEventListener('click', function (event) {
   sendFileButton.id = 'import-send-file-button';
   importForm.appendChild(fileInput);
   importForm.appendChild(sendFileButton);
-  document.querySelector('#yeld').appendChild(importForm);
+  document.querySelector('#yield').appendChild(importForm);
   uploadFile();
 });
 
@@ -42,7 +42,7 @@ function showList(source) {
     then((response) => response.json()).
     then((data) => populateList(data)).
     then(() => {
-      document.querySelector('#yeld').appendChild(fragment);
+      document.querySelector('#yield').appendChild(fragment);
     }).
     catch(function (error) {
       console.log(error);
@@ -147,7 +147,7 @@ function addClass(element, className) {
   }
 }
 
-function clearYeld(elementId = '#yeld') {
+function clearYeld(elementId = '#yield') {
   const deletable_element = document.querySelector(elementId);
   /*deletable_elements.forEach(item => item.remove());*/
   deletable_element.innerHTML = '';
