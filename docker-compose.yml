@@ -58,7 +58,7 @@ services:
       - redis
     environment:
       - REDIS_URL=redis://redis:6379/0
-    command: bash -c "cd app && sidekiq -r ./jobs/import_from_csv_job.rb"
+    command: bash -c "cd app && bundle install && sidekiq -r ./jobs/import_from_csv_job.rb"
 
   redis:
     container_name: redis
