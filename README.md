@@ -1,99 +1,97 @@
 # rebase-labs 0.0.1
 
-## origem
-O re:bLABSe é o resultado de um bootcamp com o objetivo de construir um aplicativo sem utilizar Rails. 
+## origin
+re:bLABSe is the result of a bootcamp with the goal of building a web application without using Rails.
 
-## função
- O aplicativo foca em processo de importação de dados CSV referentes a exames médicos. O processo de importação, bem como a visualização dos dados importados, podem ser realizados por uma interface HTML, por endpoints em API e por um script em ruby.
+## function
+The application focuses on the process of importing CSV data related to medical exams. The import process and the visualization of the imported data, can be done through an HTML interface, API endpoints, and a Ruby script.
 
-## instalação e inicialização
+## installation and startup
 
-1. Instale o docker compose seguindo instruções em
+1. Install docker compose following the instructions at
    - https://docs.docker.com/compose/install/
-2. Certifique-se de que o docker está em execução com `docker ps`
-   - Caso não esteja, execute `sudo systemctl start docker`
-   - Caso ocorra algum problema, verifique se o usuário do seu sistema tem permissão de sudo.
-   - Você pode autorizar seu usuário com `sudo usermod -aG docker $USER`
-3. Clone o repositório com
+2. Make sure docker is running with `docker ps`
+   - If it is not, run `sudo systemctl start docker`
+   - If any problems occur, check if your system user has sudo permission.
+   - You can authorize your user with `sudo usermod -aG docker $USER`
+3. Clone the repository with
    - `sudo git clone https://github.com/GyodaiDDA/rebase-labs.git`
-4. Acesse o diretório `rebase-labs/app/`
-5. No terminal, utilize `docker compose up`
+4. Access the `rebase-labs/app/` directory
+5. In the terminal, use `docker compose up`
+   
+## web interface
+    Once the project is live, the html interface will be available at http://localhost:4567.
 
-## utilização
-### interface web
-Com o projeto no ar, a interface html estará disponível em http://localhost:4567. 
+### - import
+*To import the data, click **Import**, select the `data1.csv` file located in `rebase-labas/app/csv` and click **Upload file**.
 
-#### Import
-Para importar os dados, clique em **Import**, selecione o arquivo `data1.csv` que se encontra em `rebase-labas/app/csv` e clique em **Upload file**.
-> O trabalho de importação é assíncrono, então pode levar alguns minutos até que você possa visualizar os dados importados.
+    The import job is asynchronous, so it may take some time until you can visualize the imported data.*
 
-#### See all data
-Para isso, clique em **See all data**. Cada resultado será representado pelo token e pela data do exame. Clicando em cada resultado, você pode visualizar mais detalhes do exame.
+### - see all data
+*To do this, click the button **"See all data"**. Each result will be represented by the token and the exam date. By clicking on each result, you can view more details about the exam.*
 
-#### Search
-Para realizar uma busca por tokens, preencha o campo de entrada e clique em **Search**.
+### - search
+*To search for tokens, fill in the input field and click **Search**. The token search can receive one or more elements separated by commas and no spaces.*
 
-> A busca por tokens pode receber um ou mais elementos separados por vírgula e sem espaço. 
-> 
-> Exemplo: **5UP5FA,IWH46D,AAA111**
+    Example: **5UP5FA,IWH46D,AAA111**
 
-
-> Serão mostrados os resultados referentes aos tokens válidos. Tokens que não correspondam a um registro no banco de dados serão ignorados.
-
-### script de importação
-
-Na pasta app, pode ser utilizado diretamente o script de importação `ruby import_from_csv.rb` que vai importar os dados do arquivo `data1.csv`.
-
-### endpoints
-
-Os endpoints são listados a seguir:
-
-- /tests
-  retorna todos os registros de exames encontrados no banco de dados
-- /tests/{tokens}
-  retorna os detalhes de um ou mais exames
-- /import
-  recebe POST para importação de arquivo csv
-
-### pastas
-
-- O bloco central da aplicação é formada por `server.rb` e `config.ru`, ambos na pasta **app** do container *backend*.
-- As pastas seguem a seguinte estrutura:
-  - **/public** - contém os arquivos referentes ao frontend/interface web
-  - **/csv** - é a pasta padrão para os arquivos CSV `test-file.csv` e `data1.csv` a serem importados via script
-  - **/jobs** - contém dois jobs asíncronos responsáveis pela importação dos arquivos e limpeza dos arquivos temporários que são salvos na mesma pasta.
-  - **/queries** - tem arquivos sql utilizados por diversos métodos
-  - **/helpers** - contém métodos especializados para operações com banco de dados, leitura de arquivos csv e entrega de dados aos endpoints
-  - **/config** contém apenas database.yml com configuração de ambientes
+*The results for valid tokens will be shown. Tokens that do not correspond to a record in the database will be ignored.*
 
 
-### estrutura de dados
-Para que o csv seja importável, deve seguir esta estrutura:
-  - cpf;nome paciente;email paciente;data nascimento paciente;endereço/rua paciente;cidade paciente;estado patiente;crm médico;crm médico estado;nome médico;email médico;token resultado exame;data exame;tipo exame;limites tipo exame;resultado tipo exame
-- no banco de dados essa estrutura é separada em 5 tabelas:
-  -  pacients;
-  -  doctors;
-  -  exams;
-  -  test_types;
-  -  test_results.
+## import script
+
+In the app folder, the import script `ruby import_from_csv.rb` can be used directly to import the data from the `data1.csv` file.
 
 
-### testes automatizados
+## endpoints
 
-A gem rspec está instalada e testes para os processos do backend estão implementados. Para executar os testes, execute `rspec` no diretório `rebase-labs/app/`.
+The endpoints are listed below:
 
-### versões e gems
+   - **/tests**
+     - returns all exam records found in the database
+   - **/tests/{tokens}**
+     - returns the details of one or more exams
+   - **/import**
+     - receives POST to import a csv file
 
-Todas as gems e suas versões encontram-se em `Gemfile`. O docker compose sempre usará a versão mais recente das imagens **ruby**, **postgres** e **redis**.
 
-### próximos passos
+## folders
 
-Neste mesmo diretório, encontra-se o arquivo TODO.md com notas para desenvolvimento futuro da aplicação.
+- The central block of the application is formed by `server.rb` and `config.ru`, both in the **app** folder of the *backend* container.
+- The folders follow the following structure:
+- **/public** - contains the files related to the frontend/web interface
+- **/csv** - is the default folder for the CSV files `test-file.csv` and `data1.csv` to be imported via script
+- **/jobs** - contains two asynchronous jobs responsible for importing the files and cleaning the temporary files that are saved in the same folder.
+- **/queries** - contains sql files used by several methods
+- **/helpers** - contains specialized methods for database operations, reading csv files and delivering data to endpoints
+- **/config** contains only database.yml with environment configuration
 
-### agradecimentos
+## data structure
+- For the csv to be importable, it must follow this structure:
+  - cpf; patient name; patient email; patient date of birth; patient address/street; patient city; patient state; doctor's crm; doctor's crm state; doctor's name; doctor's email; exam result token; exam date; exam type; exam type limits; exam type result
 
-À rebase e à ajuda inestimável dos colegas CampusCoders da T11.
+- in the database this structure is separated into 5 tables:
+  - patients
+  - doctors
+  - exams
+  - test_types
+  - test_results
+  
+## automated tests
 
+The rspec gem is installed and tests for the backend processes are implemented. To run the tests, run `rspec` in the `rebase-labs/app/` directory.
+
+
+## versions and gems
+All gems and their versions can be found in `Gemfile`. Docker compose will always use the latest version of the **ruby**, **postgres** and **redis** images.
+
+
+## next steps
+*In this same directory, you can find the TODO.md file with notes for future development of the application.*
+
+## thanks
+
+*Thanks to rebase and the invaluable help of my fellow CampusCoders from T11.*
 o/
 
-#### contato: rodrigo.gyodai@gmail.com
+#### contact: rodrigo.gyodai@gmail.com
